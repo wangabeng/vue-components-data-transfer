@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+
+</style>
+</head>
+<script src='./vue2.js'></script>
+<script>
+window.onload=function(){
+	new Vue({
+		el:'#box',
+		data:{
+			counter:0
+		},
+		methods:{
+			add:function(){
+				this.counter+=1;
+			}
+		},
+		components:{
+			'my-component':{
+				template:`
+					<button v-on:click='addself'>{{selfCounter}}</button>
+				`,
+				props:['myMessage'],
+				methods:{
+					addself:function(){
+						this.selfCounter+=1;
+						//$emit(eventName) 触发事件
+						//$on(eventName) 监听事件
+						this.$emit('addself');
+
+					}
+				},
+				data:function(){
+					return {
+						selfCounter:0
+					}
+				}	
+			}
+		}
+	});
+};
+</script>
+<body>
+<div id="box">
+  <p>{{ counter }}</p>
+  <my-component v-on:addself="add"></my-component><!-- 自定义事件名称 不能用驼峰写法add-self addSelf无效 -->
+  <my-component v-on:addself="add"></my-component><!-- 自定义事件名称 不能用驼峰写法add-self addSelf无效 -->
+</div>
+</body>
+</html>
